@@ -20,10 +20,16 @@ spring:
           uri: http://10.1.1.223/llj/spring-cloud-config-center.git
           username: llj
           password: lljlljllj
+        health:
+          repositories:
+            webapp-server:
+              name: web-appserver
+              label: master
+              profiles: dev
   security:
     user:
       name: config
       password: config
 ###encrypt some config info
 encrypt:
-  key: this.is.my.key
+  key: thisismykey

@@ -19,10 +19,14 @@ spring:
         git:
           uri: http://10.1.1.223/llj/spring-cloud-config-center.git
           username: llj
-          password: 198499llj
+          password: lljlljllj
         health:
           repositories:
-            webapp
+            webapp-server:
+              name: webapp-server
+              label: master
+              profiles: dev
+
   security:
     user:
       name: config
@@ -30,4 +34,15 @@ spring:
 ###encrypt some config info
 encrypt:
   key: thisismykey
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+logging:
+  level:
+    org.springframework.cloud.config.server: DEBUG
+    org.springframework.cloud.config.server.config.ConfigServerHealthIndicator: DEBUG
+
 
