@@ -31,6 +31,8 @@
         <module>eureka-server2</module>
         <module>webapp-server1</module>
         <module>webapp-server2</module>
+        <module>config-server1</module>
+        <module>config-server2</module>
     </modules>
 
     <profiles>
