@@ -1,0 +1,21 @@
+server:
+  port: 8000
+
+###-----1 client---------
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+spring:
+  application:
+    name: webapp
+
+webapp-server:
+  ribbon:
+    ###-----2 client-----config server list for old project  no eureka only use ribbon
+    #listOfServers: localhost:8080,localhost:8001
+    ###-----3 client-----config eureka client ribbon
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule

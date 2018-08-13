@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>spring-cloud-project</artifactId>
+    <version>${projectVersion}</version>
+
+    <properties>
+        <projectVersion>3.0</projectVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Finchley.SR1</spring-cloud.version>
+    </properties>
+
+    <modules>
+        <module>common</module>
+        <module>webapp-logic</module>
+        <module>webapp</module>
+        <module>eureka-server1</module>
+        <module>eureka-server2</module>
+        <module>webapp-server1</module>
+        <module>webapp-server2</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <appEnv>dev</appEnv>
+                <appImageVersion>dev</appImageVersion>
+                <appDockerHost>http://10.1.1.227:2376</appDockerHost>
+                <appDockerRegistry>10.1.1.227:5000</appDockerRegistry>
+                <appPort>8080</appPort>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <appEnv>test</appEnv>
+                <appImageVersion>test</appImageVersion>
+                <appDockerHost>http://192.168.1.201:5555</appDockerHost>
+                <appDockerRegistry>192.168.1.201:5000</appDockerRegistry>
+                <appPort>8080</appPort>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <appEnv>prod</appEnv>
+                <appImageVersion>${project.version}</appImageVersion>
+                <appDockerHost>http://10.1.1.227:2376</appDockerHost>
+                <appDockerRegistry>10.1.1.227:5000</appDockerRegistry>
+                <appPort>8080</appPort>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>common</artifactId>
+                <version>${projectVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>webapp-logic</artifactId>
+                <version>${projectVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>webapp</artifactId>
+                <version>${projectVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>eureka-server1</artifactId>
+                <version>${projectVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.26.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
+            <!-- 构建镜像：       mvn docker:build -->
+            <!-- 运行镜像-在当前控制台输出日志：       mvn docker:run -->
+            <!-- 启动镜像：       mvn docker:start -->
+            <!-- 停止镜像：       mvn docker:stop  -->
+            <!-- 删除镜像：       mvn -Ddocker.removeAll docker:remove  -->
+            <!-- 查看镜像日志：    mvn docker:logs -->
+            <!-- 镜像启动成功后，访问地址为： http://192.168.1.70:8881/ams-server -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <!--remote docker host-->
+                    <dockerHost>${appDockerHost}</dockerHost>
+                    <!--docker registry-->
+                    <registry>${appDockerRegistry}</registry>
+                    <useColor>true</useColor>
+                    <images>
+                        <image>
+                            <!--docker image name| the prefix ${project.groupId} is code folder-->
+                            <name>${project.groupId}/${project.name}:${appImageVersion}</name>
+                            <!--docker container name-->
+                            <alias>${project.name}</alias>
+                            <build>
+                                <from>openjdk:8</from>
+                                <assembly>
+                                    <!--container code dir==${project.groupId}-->
+                                    <name>${project.groupId}</name>
+                                    <!--must artifact then copy jar to build docker| if other then copy src to build docker-->
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <!--author-->
+                                <maintainer>lljstar@163.com</maintainer>
+                                <!--docker image tag-->
+                                <!-- <tags>
+                                     <tag>latest</tag>
+                                     <tag>${appVersion}</tag>
+                                 </tags>-->
+                                <ports>
+                                    <port>${appPort}</port>
+                                    <port>8888</port>
+                                </ports>
+                                <volumes>
+                                    <volume>/data0/logs</volume>
+                                </volumes>
+                                <workdir>/${project.groupId}</workdir>
+                                <!-- <env>
+                                     <spring_profiles_active>${appEnv}</spring_profiles_active>
+                                     &lt;!&ndash;not use for spring boot |only java cmd -Xms setting&ndash;&gt;
+                                     <JAVA_OPTS>-Xms10m -Xmx50m -Xmn20m</JAVA_OPTS>
+                                     <CATALINA_OPTS>-Xms500m -Xmx1000m -Xmn200m</CATALINA_OPTS>
+                                 </env>-->
+                                <!--replace cmd|open the remote8888 for debug |intellij remote debug-->
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-server</arg>
+                                        <!--java:jdk: for docker memory limit-->
+                                        <arg>-Xms512m</arg>
+                                        <arg>-Xmx1024m</arg>
+                                        <!--openjdk8:for docker container autodetect limit-->
+                                        <!-- <arg>-XX:+UnlockExperimentalVMOptions</arg>
+                                         <arg>-XX:+UseCGroupMemoryLimitForHeap</arg>-->
+                                        <!--open remote debug-->
+                                        <arg>-Xdebug</arg>
+                                        <arg>-Xnoagent</arg>
+                                        <arg>-Djava.compiler=NONE</arg>
+                                        <arg>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8888</arg>
+                                        <!--open remote jmx jvm-->
+                                        <!-- <arg>-Djava.rmi.server.hostname=0.0.0.0</arg>
+                                        <arg>-Dcom.sun.management.jmxremote</arg>
+                                        <arg>-Dcom.sun.management.jmxremote.port=9999</arg>
+                                        <arg>-Dcom.sun.management.jmxremote.authenticate=false</arg>
+                                        <arg>-Dcom.sun.management.jmxremote.ssl=false</arg>-->
+                                        <arg>-jar</arg>
+                                        <arg>/${project.groupId}/${project.name}-${project.version}.jar</arg>
+                                        <arg>--spring.profiles.active=${appEnv}</arg>
+                                        <!--use env spring.profiles.active replace-->
+                                        <!--<arg>&#45;&#45;spring.profiles.active=${appEnv}</arg>-->
+                                    </exec>
+                                </entryPoint>
+                                <!--<entryPoint>["java", "-jar", "/${project.groupId}/${project.name}-${project.version}.jar &#45;&#45;spring.profiles.active=${appEnv}"]</entryPoint>-->
+                                <!-- docker container start cmd code dir==dockerfile code dir-->
+                                <!--<cmd>java -jar /${project.groupId}/${project.name}-${project.version}.jar &#45;&#45;spring.profiles.active=${appEnv}</cmd>-->
+                                <!--docker lable-->
+                                <!--<labels></labels>-->
+                                <!-- <healthCheck>
+                                     <interval>1s</interval>
+                                     <timeout>3s</timeout>
+                                     <retries>3</retries>
+                                     <cmd>curl -f http://localhost:8080/ || exit 1</cmd>
+                                 </healthCheck>-->
+                            </build>
+                            <run>
+                                <!--use image alias name as container name-->
+                                <namingStrategy>alias</namingStrategy>
+                                <ports>
+                                    <port>${appPort}:${appPort}</port>
+                                    <port>8888:8888</port>
+                                    <port>9999:9999</port>
+                                </ports>
+                                <volumes>
+                                    <bind>
+                                        <!--new mount-->
+                                        <volume>/data0/logs</volume>
+                                        <!--mapping host to container-->
+                                        <volume>/data0/code:/opt</volume>
+                                    </bind>
+                                </volumes>
+                                <!-- <wait>
+                                     <http>
+                                         <url>https://www.163.com/</url>
+                                         <method>GET</method>
+                                         <status>200..399</status>
+                                     </http>
+                                     <healthy>true</healthy>
+                                 </wait>-->
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <!-- <execution>
+                         <id>docker:start</id>
+                         <phase>install</phase>
+                         <goals>
+                             <goal>run</goal>
+                         </goals>
+                     </execution>-->
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
