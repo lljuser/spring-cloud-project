@@ -17,9 +17,9 @@ spring:
     config:
       server:
         git:
-          uri: http://10.1.1.223/llj/spring-cloud-config-center.git
-          username: llj
-          password: lljlljllj
+          uri: https://github.com/lljuser/spring-cloud-config-center.git
+          #username: llj
+          #password: lljlljllj
         health:
           repositories:
             webapp-server:

@@ -17,6 +17,13 @@ spring:
     bus:
       trace:
         enabled: true
+    rabbitmq:
+        host: 10.1.1.222
+        port: 5672
+        username: admin
+        password: admin
+        listener:
+          simple:
 eureka:
   instance:
     metadata-map:

@@ -1,0 +1,54 @@
+server:
+  port: 8010
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+    metadata-map:
+      zone: zone1
+
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+    #not register to eureka-server
+    #register-with-eureka: false
+
+spring:
+  application:
+    name: zuul-server
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+zuul:
+  ignored-services: "*"
+  #ignored-patterns: "**/config/**
+  ###--api prefix ---http://xxxx/api/xxx
+  #prefix: /api
+  routes:
+    webapp-server: /myapp-server/**
+    webapp: /myapp/**
+    ###alaxs name
+    my-route1:
+      service-id: webapp-server
+      path: /my-route1/**
+    my-route2:
+      url: http://localhost:8000/
+      path: /my-route2/**
+logging:
+  level:
+    com.netflix: DEBUG
+
+
+
+
+
+
+
+
+
+
