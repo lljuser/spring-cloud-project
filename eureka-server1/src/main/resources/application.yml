@@ -1,6 +1,10 @@
 server:
   port: 8761
 eureka:
+  ###--close self preseration and clean the down server every 20s
+  #server:
+  #  enable-self-preservation: false
+  #  eviction-interval-timer-in-ms: 20000
   instance:
     metadata-map:
       zone: zone1

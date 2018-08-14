@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8010
 
 ###-----1 client---------
 eureka:
@@ -12,10 +12,14 @@ eureka:
 spring:
   application:
     name: webapp
+logging:
+  level:
+    com.example.webapp.service.UserFeignClient: DEBUG
 
-webapp-server:
-  ribbon:
+#webapp-server:
+#  ribbon:
     ###-----2 client-----config server list for old project  no eureka only use ribbon
     #listOfServers: localhost:8080,localhost:8001
     ###-----3 client-----config eureka client ribbon
     #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+

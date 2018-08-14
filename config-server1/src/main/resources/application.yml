@@ -10,6 +10,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+
 spring:
   application:
     name: config-server
@@ -26,11 +27,21 @@ spring:
               name: webapp-server
               label: master
               profiles: dev
-
+    bus:
+      enabled: true
   security:
     user:
       name: config
       password: config
+      roles: ENDPOINT_ADMIN
+  rabbitmq:
+    host: 10.1.1.222
+    port: 5672
+    username: admin
+    password: admin
+    listener:
+      simple:
+        max-concurrency: 10
 ###encrypt some config info
 encrypt:
   key: thisismykey
