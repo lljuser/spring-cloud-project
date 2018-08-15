@@ -1,35 +1,57 @@
 server:
-  port: 8091
+  port: @appPort@
 eureka:
   instance:
     metadata-map:
-      zone: zone2
+      zone: @eurekaZone@
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    ip-address: @eurekaHostIP@
     lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
   client:
     service-url:
-      defaultZone: http://eureka:eureka@127.0.0.1:8762/eureka/
+      defaultZone: @eurekaServer@
+
 spring:
+  profiles:
+    active: @appEnv@
   application:
     name: config-server
   cloud:
+#    inetutils:
+#      preferred-networks:
+#        - 10.1
     config:
       server:
         git:
           uri: https://github.com/lljuser/spring-cloud-config-center.git
           #username: llj
           #password: lljlljllj
-        health:
-          repositories:
-            webapp-server:
-              name: web-appserver
-              label: master
-              profiles: dev
+#        health:
+#          repositories:
+#            webapp-server:
+#              name: webapp-server
+#              label: master
+#              profiles: dev
+    bus:
+      enabled: true
   security:
     user:
       name: config
       password: config
+      roles: ENDPOINT_ADMIN
 ###encrypt some config info
 encrypt:
   key: thisismykey
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+logging:
+  level:
+    org.springframework.cloud.config.server: DEBUG
+    org.springframework.cloud.config.server.config.ConfigServerHealthIndicator: DEBUG
+
+

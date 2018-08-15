@@ -1,7 +1,0 @@
-server:
-  port: 8080
-
-###---move to bootstrap.yml---
-#spring:
-#  application:
-#    name: webapp-server

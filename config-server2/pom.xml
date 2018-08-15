@@ -10,6 +10,27 @@
     <artifactId>config-server2</artifactId>
     <packaging>jar</packaging>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <appPort>8091</appPort>
+                <eurekaHostIP>127.0.0.1</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaServer>
+                <eurekaZone>zone2</eurekaZone>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <appPort>8091</appPort>
+                <dockerHostIP>10.1.1.227</dockerHostIP>
+                <eurekaHostIP>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaHostIP>
+                <eurekaZone>zone2</eurekaZone>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -27,6 +48,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
     </dependencies>
 

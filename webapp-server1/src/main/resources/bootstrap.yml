@@ -1,7 +1,14 @@
+server:
+  port: 8000
+
 spring:
   application:
     name: webapp-server
   cloud:
+    inetutils:
+      preferred-networks:
+        - 10.1
+        - 192.168.1
     config:
       #uri: http://localhost:8090/
       #connect config-server by eureka-server
@@ -17,24 +24,17 @@ spring:
     bus:
       trace:
         enabled: true
-    rabbitmq:
-        host: 10.1.1.222
-        port: 5672
-        username: admin
-        password: admin
-        listener:
-          simple:
 eureka:
   instance:
     metadata-map:
       zone: zone1
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    #ip-address: 127.0.0.1
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 20
   client:
     service-url:
-      defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+      defaultZone: http://eureka:eureka@10.1.1.227:8761/eureka/
 
 #logging:
 #  level:
@@ -42,8 +42,8 @@ eureka:
 #    org.springframework.boot: DEBUG
 
 ####---client for refresh config---
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"

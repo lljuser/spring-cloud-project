@@ -1,20 +1,26 @@
 server:
-  port: 8090
+  port: @appPort@
 eureka:
   instance:
     metadata-map:
-      zone: zone1
+      zone: @eurekaZone@
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    ip-address: @eurekaHostIP@
     lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
   client:
     service-url:
-      defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+      defaultZone: @eurekaServer@
 
 spring:
+  profiles:
+    active: @appEnv@
   application:
     name: config-server
   cloud:
+#    inetutils:
+#      preferred-networks:
+#        - 10.1
     config:
       server:
         git:
@@ -34,14 +40,7 @@ spring:
       name: config
       password: config
       roles: ENDPOINT_ADMIN
-  rabbitmq:
-    host: 10.1.1.222
-    port: 5672
-    username: admin
-    password: admin
-    listener:
-      simple:
-        max-concurrency: 10
+
 ###encrypt some config info
 encrypt:
   key: thisismykey

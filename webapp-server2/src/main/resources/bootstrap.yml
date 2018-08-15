@@ -1,7 +1,14 @@
+server:
+  port: 8001
+
 spring:
   application:
     name: webapp-server
   cloud:
+    inetutils:
+      preferred-networks:
+        - 10.1
+        - 192.168.1
     config:
       #uri: http://localhost:8090/
       #connect config-server by eureka-server
@@ -12,18 +19,23 @@ spring:
       lable: master
       username: config
       password: config
+      fail-fast: true
+      retry: 3
+    bus:
+      trace:
+        enabled: true
 
 eureka:
   instance:
     metadata-map:
       zone: zone2
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    #ip-address: 127.0.0.1
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 20
   client:
     service-url:
-      defaultZone: http://eureka:eureka@127.0.0.1:8762/eureka/
+      defaultZone: http://eureka:eureka@10.1.1.227:8761/eureka/
 
 #logging:
 #  level:
@@ -32,8 +44,8 @@ eureka:
 
 
 ####---client for refresh config---
-management:
-  endpoints:
-    web:
-      exposure:
-        include: ["health","info","refresh"]
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"

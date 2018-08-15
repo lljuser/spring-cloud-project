@@ -173,7 +173,7 @@
                                  </tags>-->
                                 <ports>
                                     <port>${appPort}</port>
-                                    <port>8888</port>
+                                    <!--<port>8888</port>-->
                                 </ports>
                                 <volumes>
                                     <volume>/data0/logs</volume>
@@ -197,10 +197,10 @@
                                         <!-- <arg>-XX:+UnlockExperimentalVMOptions</arg>
                                          <arg>-XX:+UseCGroupMemoryLimitForHeap</arg>-->
                                         <!--open remote debug-->
-                                        <arg>-Xdebug</arg>
-                                        <arg>-Xnoagent</arg>
-                                        <arg>-Djava.compiler=NONE</arg>
-                                        <arg>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8888</arg>
+                                        <!--<arg>-Xdebug</arg>-->
+                                        <!--<arg>-Xnoagent</arg>-->
+                                        <!--<arg>-Djava.compiler=NONE</arg>-->
+                                        <!--<arg>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8888</arg>-->
                                         <!--open remote jmx jvm-->
                                         <!-- <arg>-Djava.rmi.server.hostname=0.0.0.0</arg>
                                         <arg>-Dcom.sun.management.jmxremote</arg>
@@ -231,8 +231,8 @@
                                 <namingStrategy>alias</namingStrategy>
                                 <ports>
                                     <port>${appPort}:${appPort}</port>
-                                    <port>8888:8888</port>
-                                    <port>9999:9999</port>
+                                    <!--<port>8888:8888</port>-->
+                                    <!--<port>9999:9999</port>-->
                                 </ports>
                                 <volumes>
                                     <bind>

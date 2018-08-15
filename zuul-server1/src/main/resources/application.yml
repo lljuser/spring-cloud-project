@@ -1,18 +1,18 @@
 server:
-  port: 8010
+  port: @appPort@
 
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    ip-address: @eurekaHostIP@
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 20
     metadata-map:
-      zone: zone1
+      zone: @eurekaZone@
 
   client:
     service-url:
-      defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+      defaultZone: @eurekaServer@
     #not register to eureka-server
     #register-with-eureka: false
 
@@ -24,21 +24,27 @@ management:
     web:
       exposure:
         include: "*"
-zuul:
-  ignored-services: "*"
-  #ignored-patterns: "**/config/**
-  ###--api prefix ---http://xxxx/api/xxx
-  #prefix: /api
-  routes:
-    webapp-server: /myapp-server/**
-    webapp: /myapp/**
-    ###alaxs name
-    my-route1:
-      service-id: webapp-server
-      path: /my-route1/**
-    my-route2:
-      url: http://localhost:8000/
-      path: /my-route2/**
+#zuul:
+#  ignored-services: "*"
+#  #ignored-patterns: "**/config/**
+#  ###--api prefix ---http://xxxx/api/xxx
+#  #prefix: /api
+#  routes:
+#    webapp-server: /myapp-server/**
+#    webapp: /myapp/**
+#    ###alaxs name
+#    my-route1:
+#      service-id: webapp-server
+#      path: /my-route1/**
+#    my-route2:
+#      url: http://localhost:8000/
+#      path: /my-route2/**
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 3000
+  MaxTotalHttpConnections: 300
+  MaxConnectionsPerHost: 100
 logging:
   level:
     com.netflix: DEBUG

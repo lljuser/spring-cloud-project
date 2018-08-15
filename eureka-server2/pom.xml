@@ -10,8 +10,26 @@
     <artifactId>eureka-server2</artifactId>
     <packaging>jar</packaging>
 
-    <name>eureka-server2</name>
-    <description>Demo project for Spring Boot</description>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <appPort>8762</appPort>
+                <eurekaHostIP>0.0.0.0</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaServer>
+                <eurekaZone>zone2</eurekaZone>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <appPort>8762</appPort>
+                <eurekaHostIP>10.1.1.227</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaServer>
+                <eurekaZone>zone2</eurekaZone>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
