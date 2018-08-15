@@ -33,6 +33,7 @@
         <module>webapp-server2</module>
         <module>config-server1</module>
         <module>config-server2</module>
+        <module>zuul-server1</module>
     </modules>
 
     <profiles>
