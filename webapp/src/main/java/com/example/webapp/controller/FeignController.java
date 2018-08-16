@@ -1,6 +1,7 @@
 package com.example.webapp.controller;
 
 import com.example.webapp.logic.model.TestUserModel;
+import com.example.webapp.model.HealthModel;
 import com.example.webapp.service.UserFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,10 @@ public class FeignController {
         return this.userFeignClient.getUser();
     }
 
+    @RequestMapping(value = "/gethealth")
+    public HealthModel getHealth(){
+        return this.userFeignClient.getHealth();
+    }
 
 
 }

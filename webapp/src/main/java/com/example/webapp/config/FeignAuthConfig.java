@@ -12,10 +12,13 @@ import org.springframework.context.annotation.Configuration;
  * **/
 @Configuration
 public class FeignAuthConfig implements IFeignConfig {
-    @Bean
+    /**
+     * 通过配置实现每个FeginClient日志开关
+     * **/
+   /* @Bean
     public Logger.Level feignLoggerLevel(){
         return Logger.Level.FULL;
-    }
+    }*/
 
     @Bean
     public FeignBasicAuthRequestInterceptor basicAuthRequestInterceptor(){
