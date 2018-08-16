@@ -35,6 +35,7 @@
         <module>config-server2</module>
         <module>zuul-server1</module>
         <module>webapp-sidecar</module>
+        <module>hystrix-dashboard</module>
     </modules>
 
     <profiles>

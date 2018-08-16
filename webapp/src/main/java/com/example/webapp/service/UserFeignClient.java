@@ -23,18 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Service
 @FeignClient(name="webapp-server",
         configuration = FeignAuthConfig.class,
-        fallback = HystrixUserFeignClientFallback.class)
+        fallbackFactory = HystrixUserFeginFallbackFactory.class
+        //fallback = HystrixUserFeignClientFallback.class
+        )
 public interface UserFeignClient {
 
     /**
      * 使用不同的隔离策略
      * **/
     @RequestMapping("/testuser/getuser")
-    @HystrixCommand(fallbackMethod = "stubMyService",
-            commandProperties = {
-                    @HystrixProperty(name="execution.isolation.strategy", value="SEMAPHORE")
-            }
-    )
     public TestUserModel getUser();
 
     @RequestMapping("/sidecar/health")

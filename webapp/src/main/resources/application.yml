@@ -5,13 +5,18 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    #ip-address: 127.0.0.1
   client:
     service-url:
-      defaultZone: http://eureka:eureka@10.1.1.227:8761/eureka/
+      defaultZone: http://eureka:eureka@${eurekaHostIP}:8761/eureka/
 spring:
   application:
     name: webapp
+  cloud:
+    inetutils:
+      preferred-networks:
+        - 10.1
+        - 192.168.1
 logging:
   level:
     com.example.webapp.service.UserFeignClient: DEBUG
@@ -27,8 +32,8 @@ feign:
   client:
     config:
       webapp-server:
-        connectTimeout: 5000
-        readTimeout: 5000
+        connectTimeout: 1000
+        readTimeout: 1000
         loggerLevel: full
 #        errorDecoder: com.example.SimpleErrorDecoder
 #        retryer: com.example.SimpleRetryer
@@ -42,7 +47,11 @@ feign:
 
 feign:compression.request.enabled: true
 feign.compression.response.enabled: true
-###if hystrix in classpath then fegin will use hystrix. you can disable hystrix by below
-#feign.hystrix.enabled: false
+###open fegin use hystrix then can fallback
+feign.hystrix.enabled: true
 
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

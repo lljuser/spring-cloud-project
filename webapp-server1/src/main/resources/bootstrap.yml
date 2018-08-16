@@ -15,7 +15,7 @@ spring:
       discovery:
         enabled: true
         service-id: config-server
-      profile: dev
+      profile: ${gitActive}
       lable: master
       username: config
       password: config
@@ -34,7 +34,7 @@ eureka:
     lease-expiration-duration-in-seconds: 20
   client:
     service-url:
-      defaultZone: http://eureka:eureka@10.1.1.227:8761/eureka/
+      defaultZone: http://eureka:eureka@${eurekaHostIP}:8761/eureka/
 
 #logging:
 #  level:
