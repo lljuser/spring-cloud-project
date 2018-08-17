@@ -69,6 +69,7 @@ feign.hystrix.enabled: false
 #      maxQueueSize: 50
 
 
+
 management:
   endpoints:
     web:
@@ -78,3 +79,4 @@ management:
 logging:
   level:
     com.example.webapp.service.UserFeignClient: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: DEBUG

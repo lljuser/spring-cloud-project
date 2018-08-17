@@ -29,6 +29,15 @@
                 <eurekaZone>zone1</eurekaZone>
             </properties>
         </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <appPort>8761</appPort>
+                <eurekaHostIP>127.0.0.1</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@0.0.0.0:8762/eureka/</eurekaServer>
+                <eurekaZone>zone1</eurekaZone>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>
