@@ -25,6 +25,7 @@ management:
       exposure:
         include: "*"
 
+
 zuul:
   ignored-services: "*"
   #ignored-patterns: "**/config/**
@@ -39,28 +40,76 @@ zuul:
       path: /config-server/**
       sensitiveHeaders: Cookie,Set-Cookie
       #ignoredHeaders: Cookie,Set-Cookie
+      #semaphore:
+      #  max-semaphores: 500
     my-route1:
       service-id: webapp-server
       path: /my-route1/**
     my-route2:
       url: http://localhost:8000/
       path: /my-route2/**
-  ##---force query string encoding
-  force-original-query-string-encoding: true
+
+
+  ###---default is SEMAPHORE
+  #ribbon-isolation-strategy: THREAD
+  ####---semaphore default 100.if currery >100 will have REJECTED_SEMAPHORE_EXECUTION error
+  semaphore:
+    max-semaphores: 2000
+  ###---use strategy THREAD---
+  #thread-pool:
+  #  use-separate-thread-pools: true
+  #  thread-pool-key-prefix: zuul-gateway-thread-
+  host:
+    #max-total-connections: 1000
+    #max-per-route-connections: 500
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
 
 ##--for download setting hystrix    must upload with  /zuul/app-name/upload-address
-hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+###----***zuul config> hystrix config***----
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          ###--config in spring
+          #strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 60000
+          ###--config in spring
+          #semaphore:
+          #  maxConcurrentRequests: 100
+      #fallback:
+      #  isolation:
+      #    maxConcurrentRequests: 10
+#  threadpool:
+#    default:
+#      ###--init work threads----
+#      coreSize: 50
+#      ###---max threads
+#      maximumSize: 200
+#      ###--if small the work thread  will create fastly.if -1 then create maximumSize fastly
+#      maxQueueSize: 10
+#      ###--queueSizeRejectionThreshold > maxQueueSize
+#      queueSizeRejectionThreshold: 200
+#      ###--max keep time
+#      keepAliveTimeMinutes: 1
+#      ###--allow max to coreszie
+#      allowMaximumSizeToDivergeFromCoreSize: true
+
+
+
 #hystrix for gateway
 ribbon:
-  ReadTimeout: 10000
-  ConnectTimeout: 3000
-  MaxTotalHttpConnections: 300
-  MaxConnectionsPerHost: 100
+  ReadTimeout: 100000
+  ConnectTimeout: 100000
+  MaxTotalHttpConnections: 50000
+  MaxConnectionsPerHost: 50000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
   #---stop lazy loading |first request is slow
   eager-load:
     enabled: true
-
-
 
 #logging:
 #  level:

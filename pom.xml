@@ -36,6 +36,7 @@
         <module>zuul-server1</module>
         <module>webapp-sidecar</module>
         <module>hystrix-dashboard</module>
+        <module>hystrix-turbine</module>
     </modules>
 
     <profiles>

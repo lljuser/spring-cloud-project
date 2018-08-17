@@ -10,10 +10,48 @@
     <artifactId>hystrix-dashboard</artifactId>
     <packaging>jar</packaging>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <appPort>8181</appPort>
+                <eurekaHostIP>0.0.0.0</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaServer>
+                <eurekaZone>zone1</eurekaZone>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <appPort>8181</appPort>
+                <eurekaHostIP>10.1.1.227</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaServer>
+                <eurekaZone>zone1</eurekaZone>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <appPort>8181</appPort>
+                <eurekaHostIP>127.0.0.1</eurekaHostIP>
+                <eurekaServer>http://eureka:eureka@${eurekaHostIP}:8761/eureka/</eurekaServer>
+                <eurekaZone>zone1</eurekaZone>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
 

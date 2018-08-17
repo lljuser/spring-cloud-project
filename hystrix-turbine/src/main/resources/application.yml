@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: hystrix-dashboard
+    name: hystrix-turbine
 eureka:
   instance:
     prefer-ip-address: true
@@ -16,8 +16,13 @@ eureka:
     service-url:
       defaultZone: @eurekaServer@
 
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+turbine:
+  app-config: zuul-server,webapp
+  cluster-name-expression: "'default'"
+  combine-host-port: true
