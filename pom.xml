@@ -37,7 +37,6 @@
         <module>webapp-sidecar</module>
         <module>hystrix-dashboard</module>
         <module>hystrix-turbine</module>
-        <module>zipkin-server</module>
     </modules>
 
     <profiles>
